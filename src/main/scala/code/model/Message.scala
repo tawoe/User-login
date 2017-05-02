@@ -51,7 +51,7 @@ package com.tesobe.model{
 }
 
 package com.tesobe.status.model{
-  case class GetSupportedBanks
+  case class GetSupportedBanks()
   case class SupportedBanksReply(
     banks: Set[BankInfo]
   )
