@@ -29,25 +29,19 @@ Berlin 13359, Germany
 package bootstrap.liftweb
 
 
-import net.liftweb._
-import util._
-import common._
-import http._
-import sitemap._
-import Loc._
-import mapper._
-import Helpers._
-import http.js.JsCmds
-import json.JsonDSL._
-import javax.mail.{ Authenticator, PasswordAuthentication }
-import java.io.FileInputStream
-import java.io.File
+import java.io.{File, FileInputStream}
 
-import code.model.{Consumer, Token, dataAccess}
-import dataAccess.OBPUser
-import code.util.{Helper, MyExceptionLogger, BanksListListener}
 import code.api.OAuthHandshake
-
+import code.model.dataAccess.OBPUser
+import code.model.{Consumer, Token}
+import code.util.{BanksListListener, Helper, MyExceptionLogger}
+import net.liftweb.common._
+import net.liftweb.http._
+import net.liftweb.http.js.JsCmds
+import net.liftweb.mapper._
+import net.liftweb.sitemap._
+import net.liftweb.util.Helpers._
+import net.liftweb.util.{DefaultConnectionIdentifier => _, _}
 /**
  * A class that's instantiated early and run.  It allows the application
  * to modify lift's environment

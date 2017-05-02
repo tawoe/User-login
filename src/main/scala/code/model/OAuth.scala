@@ -37,12 +37,12 @@ import net.liftweb.util.Helpers
 import Helpers.now
 import code.model.dataAccess.APIUser
 
-object AppType extends Enumeration("web", "mobile"){
+object AppType extends Enumeration(){
   type AppType = Value
   val Web, Mobile = Value
 }
 
-object TokenType extends Enumeration("request", "access"){
+object TokenType extends Enumeration(){
   type TokenType=Value
   val Request, Access = Value
 }
