@@ -29,25 +29,23 @@ Berlin 13359, Germany
  */
 package code.snippet
 
-import net.liftweb.http.{S,SHtml,RequestVar}
-import net.liftweb.http.js.{JsCmd, JsCmds}
-import JsCmds._
-import net.liftweb.http.js.jquery.JqJsCmds._
-import net.liftweb.http.LiftRules
-import net.liftweb.util._
-import Helpers._
-import net.liftweb.common.{Full, Failure, Empty, Box, Loggable}
-import scala.xml.{NodeSeq, Unparsed}
-import scala.util.{Either, Right, Left}
-
 import code.model.dataAccess.APIUser
-import code.util.{MessageSender, Helper}
-import code.model.{Token, RequestToken, CurrentUser, GermanBanks}
+import code.model.{CurrentUser, GermanBanks, RequestToken, Token}
 import code.pgp.PgpEncryption
+import code.util.{Helper, MessageSender}
 import com.tesobe.model.AddBankAccountCredentials
+import net.liftweb.common._
+import net.liftweb.http.js.JsCmds._
+import net.liftweb.http.js.{JsCmd, JsCmds}
+import net.liftweb.http.{LiftRules, RequestVar, S, SHtml}
+import net.liftweb.util.Helpers._
+import net.liftweb.util._
+
+import scala.util.{Either, Left, Right}
+import scala.xml.{NodeSeq, Unparsed}
 
 
-class BankingCrendetials extends Loggable{
+class BankingCredentials extends Loggable{
   private lazy val NOOP_SELECTOR = "#i_am_an_id_that_should_never_exist" #> ""
 
   class FormField[T](
@@ -166,16 +164,9 @@ class BankingCrendetials extends Loggable{
   }
 
   private def updatePage(messageId: String): Box[Unit] = {
-    import net.liftweb.actor.{
-      LAFuture,
-      LiftActor
-    }
-    import com.tesobe.model.{
-      Response,
-      SuccessResponse,
-      ErrorResponse
-    }
     import code.util.ResponseAMQPListener
+    import com.tesobe.model.{ErrorResponse, Response, SuccessResponse}
+    import net.liftweb.actor.{LAFuture, LiftActor}
 
     val response: LAFuture[Response] = new LAFuture()
     // watingActor waits for acknowledgment if the bank account was added
