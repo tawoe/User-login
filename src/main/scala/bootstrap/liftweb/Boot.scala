@@ -35,6 +35,7 @@ import code.api.OAuthHandshake
 import code.model.dataAccess.OBPUser
 import code.model.{Consumer, Token}
 import code.util.{BanksListListener, Helper, MyExceptionLogger}
+import code.snippet.BankingCredentials
 import net.liftweb.common._
 import net.liftweb.http._
 import net.liftweb.http.js.JsCmds
