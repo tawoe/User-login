@@ -35,7 +35,7 @@ import net.liftweb.util.FieldError
 import net.liftweb.common.{Full,Failure,Box,Empty}
 import net.liftweb.util.Helpers
 import Helpers.now
-import code.model.dataAccess.APIUser
+import code.model.dataAccess.ResourceUser
 
 object AppType extends Enumeration(){
   type AppType = Value
@@ -130,7 +130,7 @@ class Token extends LongKeyedMapper[Token]{
   object id extends MappedLongIndex(this)
   object tokenType extends MappedEnum(this, TokenType)
   object consumerId extends MappedLongForeignKey(this, Consumer)
-  object userForeignKey extends MappedLongForeignKey(this, APIUser)
+  object userForeignKey extends MappedLongForeignKey(this, ResourceUser)
   object key extends MappedString(this,250)
   object secret extends MappedString(this,250)
   object callbackURL extends MappedString(this,250)

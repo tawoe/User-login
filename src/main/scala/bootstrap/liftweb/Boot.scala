@@ -32,7 +32,7 @@ package bootstrap.liftweb
 import java.io.{File, FileInputStream}
 
 import code.api.OAuthHandshake
-import code.model.dataAccess.OBPUser
+import code.model.dataAccess.AuthUser
 import code.model.{Consumer, Token}
 import code.util.{BanksListListener, Helper, MyExceptionLogger}
 import code.snippet.BankingCredentials
@@ -148,7 +148,7 @@ class Boot extends Loggable{
     // Use Lift's Mapper ORM to populate the database
     // you don't need to use Mapper to use Lift... use
     // any ORM you want
-    Schemifier.schemify(true, Schemifier.infoF _, OBPUser)
+    Schemifier.schemify(true, Schemifier.infoF _, AuthUser)
 
     // where to search snippet
     LiftRules.addToPackages("code")
@@ -166,7 +166,7 @@ class Boot extends Loggable{
 
     )
 
-    def sitemapMutators = OBPUser.sitemapMutator
+    def sitemapMutators = AuthUser.sitemapMutator
 
     // set the sitemap.  Note if you don't want access control for
     // each page, just comment this line out.
@@ -181,7 +181,7 @@ class Boot extends Loggable{
     LiftRules.early.append(_.setCharacterEncoding("UTF-8"))
 
     // What is the function to test if a user is logged in?
-    LiftRules.loggedInTest = Full(() => OBPUser.loggedIn_?)
+    LiftRules.loggedInTest = Full(() => AuthUser.loggedIn_?)
 
     // Use HTML5 for rendering
     LiftRules.htmlProperties.default.set((r: Req) =>

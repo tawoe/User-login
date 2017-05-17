@@ -38,7 +38,7 @@ import net.liftweb.common.Box
 
 trait User {
 
-  def apiId : String
+  def resourceUserId : String
 
   def idGivenByProvider: String
   def provider : String
