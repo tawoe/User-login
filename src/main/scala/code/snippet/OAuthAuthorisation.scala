@@ -24,7 +24,7 @@ limitations under the License.
     Ayoub Benali : ayoub AT tesobe Dot com
 */
 package code.snippet
-import net.liftweb.common.{Full, Box, Empty}
+import net.liftweb.common.{Box, Empty, Full}
 import net.liftweb.http.S
 import code.model.{Consumer, Token}
 import net.liftweb.mapper.By
@@ -33,7 +33,7 @@ import net.liftweb.util.Helpers
 import code.model.AppType._
 import code.model.TokenType
 import TokenType._
-import code.model.dataAccess.OBPUser
+import code.model.dataAccess.{AuthUser}
 import code.model.CurrentUser
 import scala.xml.NodeSeq
 import net.liftweb.util.Helpers._
@@ -61,15 +61,15 @@ object OAuthAuthorisation {
         ".signup * " #> S.??("sign.up") &
         ".forgot *" #> S.??("lost.password") &
         ".submit [value]" #> S.??("log.in") &
-        ".login [action]" #> OBPUser.loginPageURL &
+        ".login [action]" #> AuthUser.loginPageURL &
         ".forgot [href]" #> {
           val href = for {
-            menu <- OBPUser.lostPasswordMenuLoc
+            menu <- AuthUser.lostPasswordMenuLoc
           } yield menu.loc.calcDefaultHref
           href getOrElse "#"
         } &
           ".signup [href]" #>
-            OBPUser.signUpPath.foldLeft("")(_ + "/" + _)
+            AuthUser.signUpPath.foldLeft("")(_ + "/" + _)
       }
     }
     consumer match {
@@ -130,15 +130,15 @@ object OAuthAuthorisation {
         * if logged in redirect to the banking credentials page
         * else show the login form
         */
-        if (OBPUser.loggedIn_? && shouldNotLogUserOut()) {
+        if (AuthUser.loggedIn_? && shouldNotLogUserOut()) {
           RequestToken.set(Full(appToken))
-          CurrentUser.set(OBPUser.currentUser.get.user)
+          CurrentUser.set(AuthUser.currentUser.get.user)
           S.redirectTo("/banking-credentials")
         }
         else {
           val currentUrl = S.uriAndQueryString.getOrElse("/")
-          if(OBPUser.loggedIn_?) {
-            OBPUser.logUserOut()
+          if(AuthUser.loggedIn_?) {
+            AuthUser.logUserOut()
             //Bit of a hack here, but for reasons I haven't had time to discover,
             //if this page doesn't get refreshed here the session vars
             //OBPUser.loginRedirect and OBPUser.failedLoginRedirect don't
@@ -146,7 +146,7 @@ object OAuthAuthorisation {
             S.redirectTo(currentUrl)
           }
           //if login succeeds, reload the page with logUserOut=false to process it
-          OBPUser.loginRedirect.set(
+          AuthUser.loginRedirect.set(
             Full(
               Helpers.appendParams(
                 currentUrl, List(("logUserOut", "false"))
@@ -155,7 +155,7 @@ object OAuthAuthorisation {
           )
 
           //if login fails, just reload the page with the login form visible
-          OBPUser.failedLoginRedirect.set(
+          AuthUser.failedLoginRedirect.set(
             Full(
               Helpers.appendParams(
                 currentUrl, List(("failedLogin", "true"))

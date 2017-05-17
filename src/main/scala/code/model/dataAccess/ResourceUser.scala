@@ -33,8 +33,8 @@ import net.liftweb.util.Props
 
 import code.model.User
 
-class APIUser extends LongKeyedMapper[APIUser] with User with ManyToMany with OneToMany[Long, APIUser]{
-  def getSingleton = APIUser
+class ResourceUser extends LongKeyedMapper[ResourceUser] with User with ManyToMany with OneToMany[Long, ResourceUser]{
+  def getSingleton = ResourceUser
   def primaryKeyField = id
 
   object id extends MappedLongIndex(this)
@@ -59,13 +59,13 @@ class APIUser extends LongKeyedMapper[APIUser] with User with ManyToMany with On
   def emailAddress = email.get
   
   def idGivenByProvider = providerId.get 
-  def apiId = id.get.toString
+  def resourceUserId = id.get.toString
 
   def name : String = name_.get
   def provider = provider_.get
 
 }
 
-object APIUser extends APIUser with LongKeyedMetaMapper[APIUser]{
+object ResourceUser extends ResourceUser with LongKeyedMetaMapper[ResourceUser]{
     override def dbIndexes = UniqueIndex(provider_, providerId) ::super.dbIndexes
 }

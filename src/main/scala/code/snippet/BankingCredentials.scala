@@ -29,7 +29,7 @@ Berlin 13359, Germany
  */
 package code.snippet
 
-import code.model.dataAccess.APIUser
+import code.model.dataAccess.ResourceUser
 import code.model.{CurrentUser, GermanBanks, RequestToken, Token}
 import code.pgp.PgpEncryption
 import code.util.{Helper, MessageSender}
@@ -133,7 +133,7 @@ class BankingCredentials extends Loggable{
       }
   }
 
-  private def processData(t: Token, u: APIUser): String = {
+  private def processData(t: Token, u: ResourceUser): String = {
     val id = randomString(8)
     val publicKey = Props.get("publicKeyPath").getOrElse("")
     //TODO: wrap the encryption with a tryo to Handel exception
@@ -202,7 +202,7 @@ class BankingCredentials extends Loggable{
 
   }
 
-  private def generateVerifier(token: Token, user: APIUser) :Box[String] = {
+  private def generateVerifier(token: Token, user: ResourceUser) :Box[String] = {
     if (token.verifier.isEmpty) {
       val randomVerifier = token.gernerateVerifier
       token.userForeignKey(user.id)
@@ -217,7 +217,7 @@ class BankingCredentials extends Loggable{
       Full(token.verifier)
   }
 
-  private def renderForm(token: Token, user: APIUser) = {
+  private def renderForm(token: Token, user: ResourceUser) = {
     lazy val textMessage = <div>Please come back to the application where you come from and enter the following code: </div>
     def verifierMessage(verifier: String) = <div id="verifier">{verifier}</div>
 

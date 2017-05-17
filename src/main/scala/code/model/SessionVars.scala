@@ -30,7 +30,7 @@ package code.model
 
 import net.liftweb.http.SessionVar
 import net.liftweb.common.{Box, Empty}
-import code.model.dataAccess.APIUser
+import code.model.dataAccess.ResourceUser
 
 /**
 * a request token singleton unique per session.
@@ -43,4 +43,4 @@ import code.model.dataAccess.APIUser
 */
 object RequestToken extends SessionVar[Box[Token]](Empty)
 
-object CurrentUser extends SessionVar[Box[APIUser]](Empty)
+object CurrentUser extends SessionVar[Box[ResourceUser]](Empty)

@@ -51,7 +51,7 @@ class MongoDBLocalStorage extends LocalStorage {
   def getUserByApiId(id : String) : Box[User] = {
     for{
       idAsLong <- tryo{id.toLong} ?~ { s"user $id not found"}
-      user <- APIUser.find(By(APIUser.id, idAsLong)) ?~ { s"user $id not found"}
+      user <- ResourceUser.find(By(ResourceUser.id, idAsLong)) ?~ { s"user $id not found"}
     } yield user
   }
 

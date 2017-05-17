@@ -47,10 +47,10 @@ import net.liftweb.http.js.JsCmds.FocusOnLoad
 /**
  * An O-R mapped "User" class that includes first name, last name, password
  */
-class OBPUser extends MegaProtoUser[OBPUser] with Logger{
-  def getSingleton = OBPUser // what's the "meta" server
+class AuthUser extends MegaProtoUser[AuthUser] with Logger{
+  def getSingleton = AuthUser // what's the "meta" server
 
-  object user extends MappedLongForeignKey(this, APIUser)
+  object user extends MappedLongForeignKey(this, ResourceUser)
 
   override def save(): Boolean = {
     if(! (user defined_?)){
@@ -64,7 +64,7 @@ class OBPUser extends MegaProtoUser[OBPUser] with Logger{
           firstName.get + " " + lastName.get
         }
       }
-      val apiUser = APIUser.create
+      val apiUser = ResourceUser.create
         .name_(displayName)
         .email(email)
         .provider_(Props.get("apiuser.provider",""))
@@ -94,7 +94,7 @@ class OBPUser extends MegaProtoUser[OBPUser] with Logger{
 /**
  * The singleton that has methods for accessing the database
  */
-object OBPUser extends OBPUser with MetaMegaProtoUser[OBPUser]{
+object AuthUser extends AuthUser with MetaMegaProtoUser[AuthUser]{
 import net.liftweb.util.Helpers._
 
 
@@ -121,7 +121,7 @@ import net.liftweb.util.Helpers._
           "a *" #> {S.??("recover.password")}
         } &
         "#SignUpLink * " #> {
-          "a [href]" #> {OBPUser.signUpPath.foldLeft("")(_ + "/" + _)} &
+          "a [href]" #> {AuthUser.signUpPath.foldLeft("")(_ + "/" + _)} &
           "a *" #> {S.??("sign.up")}
         }
       })

@@ -39,7 +39,7 @@ import java.net.URL
 import net.liftweb.http.js.JsCmds.RedirectTo
 import Helpers.tryo
 
-import code.model.dataAccess.APIUser
+import code.model.dataAccess.ResourceUser
 import code.model.Token
 import code.model.{RequestToken, CurrentUser}
 
@@ -135,20 +135,20 @@ class OAuthCallback extends Loggable{
       Failure("authentication URL is empty. Could not create the User.")
   }
 
-  private def setSessionVars(user: APIUser, token: Token): Unit = {
+  private def setSessionVars(user: ResourceUser, token: Token): Unit = {
     CurrentUser.set(Full(user))
     RequestToken.set(Full(token))
   }
 
-  private def getOrCreateAPIUser(userId: String, host: String): APIUser = {
-    APIUser.find(By(APIUser.providerId, userId), By(APIUser.provider_, host)) match {
+  private def getOrCreateAPIUser(userId: String, host: String): ResourceUser = {
+    ResourceUser.find(By(ResourceUser.providerId, userId), By(ResourceUser.provider_, host)) match {
       case Full(u) => {
         logger.info("user exist already")
         u
       }
       case _ => {
         logger.info("creating user")
-        APIUser.create
+        ResourceUser.create
         .provider_(host)
         .providerId(userId)
         .saveMe
